@@ -28,7 +28,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         m_swipeDetector = new GestureDetectorCompat(this, new OnSwipeListener() {
             @Override
             public boolean onSwipe(Direction direction) {
-                ((ImageAdapter) m_gridView.getAdapter()).makeWormMove(direction, m_gridView);
+                ((ImageAdapter) m_gridView.getAdapter()).makeWormMove(direction);
 
 //                switch (direction) {
 //                    case up:

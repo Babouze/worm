@@ -1,9 +1,11 @@
 package com.ddl.worm.utils;
 
 import android.content.Context;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import com.ddl.worm.R;
 
 public class ImageAdapter extends BaseAdapter {
+    private static int ROW_WIDTH = 10;
     private Context mContext;
     private ImageView[] mThumbsViews;
     private int mHeadPosition;
@@ -38,7 +41,7 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
-    public ImageView getWormHeadView() {
+    private ImageView getWormHeadView() {
         try {
             return mThumbsViews[mHeadPosition];
         } catch (Exception e) {
@@ -72,17 +75,83 @@ public class ImageAdapter extends BaseAdapter {
         return imageView;
     }
 
-    public boolean makeWormMove(OnSwipeListener.Direction p_direction, GridView p_gridView) {
+    private Pair<Float, Float> getLastPositionInDirection(final OnSwipeListener.Direction p_direction) {
+        int l_lastPosition;
+        switch (p_direction) {
+            case up:
+                l_lastPosition = mHeadPosition - ROW_WIDTH;
+                break;
+            case down:
+                l_lastPosition = mHeadPosition + ROW_WIDTH;
+                break;
+            case left:
+                l_lastPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
+                break;
+            case right:
+                l_lastPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
+                break;
+
+            default:
+                l_lastPosition = mHeadPosition;
+        }
+
+        return new Pair<>(mThumbsViews[l_lastPosition].getX(), mThumbsViews[l_lastPosition].getY());
+    }
+
+    private void setWormHeadPosition(final OnSwipeListener.Direction p_direction) {
+        mThumbsViews[mHeadPosition].setImageResource(R.drawable.empty);
+        mThumbIds[mHeadPosition] = R.drawable.empty;
+
+        switch (p_direction) {
+            case up:
+                mHeadPosition = mHeadPosition - ROW_WIDTH;
+                break;
+            case down:
+                mHeadPosition = mHeadPosition + ROW_WIDTH;
+                break;
+            case left:
+                mHeadPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
+                break;
+            case right:
+                mHeadPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
+                break;
+        }
+
+        mThumbsViews[mHeadPosition].setImageResource(R.drawable.worm_head);
+        mThumbIds[mHeadPosition] = R.drawable.worm_head;
+    }
+
+    public void makeWormMove(final OnSwipeListener.Direction p_direction) {
+        ImageView l_wormHead = getWormHeadView();
+
+        if (l_wormHead == null)
+            return;
+
         try {
-            ImageView l_wormHead = getWormHeadView();
-            TranslateAnimation l_animation = new TranslateAnimation(l_wormHead.getTranslationX(), l_wormHead.getTranslationX() + 700, l_wormHead.getTranslationY(), l_wormHead.getTranslationY());
-            l_animation.setDuration(1000);
-            l_animation.setInterpolator(new AccelerateInterpolator());
+            Pair<Float, Float> l_coord = getLastPositionInDirection(p_direction);
+            TranslateAnimation l_animation = new TranslateAnimation(l_wormHead.getX(), l_coord.first, l_wormHead.getY(), l_coord.second);
+            l_animation.setDuration(300);
+            l_animation.setInterpolator(new LinearInterpolator());
+            l_animation.setFillAfter(false);
+            l_animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    setWormHeadPosition(p_direction);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+
             l_wormHead.startAnimation(l_animation);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     // references to our images
