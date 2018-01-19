@@ -1,11 +1,10 @@
 package com.ddl.worm.utils;
 
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.GridLayoutAnimationController;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -14,10 +13,12 @@ import com.ddl.worm.R;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-    private AnimatorSet mCurrentAnimator;
+    private ImageView[] mThumbsViews;
+    private int mHeadPosition;
 
     public ImageAdapter(Context c) {
         mContext = c;
+        mThumbsViews = new ImageView[mThumbIds.length];
     }
 
     public int getCount() {
@@ -38,12 +39,12 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public ImageView getWormHeadView() {
-        for (int i = 0; i < this.getCount(); i++) {
-            if (mThumbIds[i] == R.drawable.worm_head) {
-                return ((ImageView) this.getItem(i));
-            }
+        try {
+            return mThumbsViews[mHeadPosition];
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -58,16 +59,26 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
+        // Set ressource
         imageView.setImageResource(mThumbIds[position]);
+
+        // Register the view
+        mThumbsViews[position] = imageView;
+
+        // Save the head position
+        if (mThumbIds[position] == R.drawable.worm_head)
+            mHeadPosition = position;
+
         return imageView;
     }
 
     public boolean makeWormMove(OnSwipeListener.Direction p_direction, GridView p_gridView) {
         try {
-//            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.worm_move);
-//            getWormHeadView().startAnimation(animation);
-            GridLayoutAnimationController l_animation = new GridLayoutAnimationController(AnimationUtils.loadAnimation(mContext, R.anim.worm_move));
-            p_gridView.startAnimation(l_animation.getAnimation());
+            ImageView l_wormHead = getWormHeadView();
+            TranslateAnimation l_animation = new TranslateAnimation(l_wormHead.getTranslationX(), l_wormHead.getTranslationX() + 700, l_wormHead.getTranslationY(), l_wormHead.getTranslationY());
+            l_animation.setDuration(1000);
+            l_animation.setInterpolator(new AccelerateInterpolator());
+            l_wormHead.startAnimation(l_animation);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,19 +87,19 @@ public class ImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top, R.drawable.border_top,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.worm_head, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_left, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.border_right,
-            R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom, R.drawable.border_bottom
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.worm_head, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty
     };
 }
