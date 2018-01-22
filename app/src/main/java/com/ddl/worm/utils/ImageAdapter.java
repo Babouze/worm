@@ -77,25 +77,30 @@ public class ImageAdapter extends BaseAdapter {
 
     private Pair<Float, Float> getLastPositionInDirection(final OnSwipeListener.Direction p_direction) {
         int l_lastPosition;
+        Pair<Float, Float> l_toReturn = null;
         switch (p_direction) {
             case up:
-                l_lastPosition = mHeadPosition - ROW_WIDTH;
+                l_lastPosition = mHeadPosition - (ROW_WIDTH * mHeadPosition / 10);
+                l_toReturn = new Pair<>((float) Animation.RELATIVE_TO_SELF, mThumbsViews[l_lastPosition].getY() - mThumbsViews[mHeadPosition].getY());
                 break;
             case down:
-                l_lastPosition = mHeadPosition + ROW_WIDTH;
+                l_lastPosition = mHeadPosition + (ROW_WIDTH * mThumbIds.length / 10);
+                l_toReturn = new Pair<>((float) Animation.RELATIVE_TO_SELF, mThumbsViews[l_lastPosition].getY() - mThumbsViews[mHeadPosition].getY());
                 break;
             case left:
                 l_lastPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
+                l_toReturn = new Pair<>(mThumbsViews[l_lastPosition].getX() - mThumbsViews[mHeadPosition].getX(), (float) Animation.RELATIVE_TO_SELF);
                 break;
             case right:
                 l_lastPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
+                l_toReturn = new Pair<>(mThumbsViews[l_lastPosition].getX() - mThumbsViews[mHeadPosition].getX(), (float) Animation.RELATIVE_TO_SELF);
                 break;
 
             default:
                 l_lastPosition = mHeadPosition;
         }
 
-        return new Pair<>(mThumbsViews[l_lastPosition].getX(), mThumbsViews[l_lastPosition].getY());
+        return l_toReturn;
     }
 
     private void setWormHeadPosition(final OnSwipeListener.Direction p_direction) {
@@ -104,10 +109,10 @@ public class ImageAdapter extends BaseAdapter {
 
         switch (p_direction) {
             case up:
-                mHeadPosition = mHeadPosition - ROW_WIDTH;
+                mHeadPosition = mHeadPosition - (ROW_WIDTH * (mHeadPosition / ROW_WIDTH));
                 break;
             case down:
-                mHeadPosition = mHeadPosition + ROW_WIDTH;
+                mHeadPosition = mHeadPosition + (ROW_WIDTH * (mThumbIds.length / ROW_WIDTH));
                 break;
             case left:
                 mHeadPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
@@ -129,7 +134,7 @@ public class ImageAdapter extends BaseAdapter {
 
         try {
             Pair<Float, Float> l_coord = getLastPositionInDirection(p_direction);
-            TranslateAnimation l_animation = new TranslateAnimation(l_wormHead.getX(), l_coord.first, l_wormHead.getY(), l_coord.second);
+            TranslateAnimation l_animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, l_coord.first, Animation.RELATIVE_TO_SELF, l_coord.second);
             l_animation.setDuration(300);
             l_animation.setInterpolator(new LinearInterpolator());
             l_animation.setFillAfter(false);
