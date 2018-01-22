@@ -132,6 +132,7 @@ public class ImageAdapter extends BaseAdapter {
                 l_rotation = 0f;
                 break;
         }
+        //TODO: remove it
         if (mHeadPosition == 0)
             mHeadPosition = 1;
 

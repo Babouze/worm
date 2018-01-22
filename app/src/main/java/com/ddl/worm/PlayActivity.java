@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.ddl.worm.utils.ImageAdapter;
 import com.ddl.worm.utils.OnSwipeListener;
@@ -42,9 +41,5 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         m_swipeDetector.onTouchEvent(motionEvent);
         view.performClick();
         return true;
-    }
-
-    public void getCoordonates(View v) {
-        Toast.makeText(this, "indice : " + ImageAdapter.mHeadPosition, Toast.LENGTH_LONG);
     }
 }
