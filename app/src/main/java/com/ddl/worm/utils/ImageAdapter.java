@@ -17,7 +17,7 @@ public class ImageAdapter extends BaseAdapter {
     private static int ROW_WIDTH = 10;
     private Context mContext;
     private ImageView[] mThumbsViews;
-    private int mHeadPosition;
+    public static int mHeadPosition;
 
     public ImageAdapter(Context c) {
         mContext = c;
@@ -76,53 +76,67 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     private Pair<Float, Float> getLastPositionInDirection(final OnSwipeListener.Direction p_direction) {
+        float l_rotation = 0f;
         int l_lastPosition;
         Pair<Float, Float> l_toReturn = null;
         switch (p_direction) {
             case up:
                 l_lastPosition = mHeadPosition - (ROW_WIDTH * mHeadPosition / 10);
                 l_toReturn = new Pair<>((float) Animation.RELATIVE_TO_SELF, mThumbsViews[l_lastPosition].getY() - mThumbsViews[mHeadPosition].getY());
+                l_rotation = 270f;
                 break;
             case down:
-                l_lastPosition = mHeadPosition + (ROW_WIDTH * mThumbIds.length / 10);
+                l_lastPosition = (mThumbIds.length - ROW_WIDTH) + mHeadPosition % ROW_WIDTH;
                 l_toReturn = new Pair<>((float) Animation.RELATIVE_TO_SELF, mThumbsViews[l_lastPosition].getY() - mThumbsViews[mHeadPosition].getY());
+                l_rotation = 90f;
                 break;
             case left:
                 l_lastPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
                 l_toReturn = new Pair<>(mThumbsViews[l_lastPosition].getX() - mThumbsViews[mHeadPosition].getX(), (float) Animation.RELATIVE_TO_SELF);
+                l_rotation = 180f;
                 break;
             case right:
                 l_lastPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
                 l_toReturn = new Pair<>(mThumbsViews[l_lastPosition].getX() - mThumbsViews[mHeadPosition].getX(), (float) Animation.RELATIVE_TO_SELF);
+                l_rotation = 0f;
                 break;
 
             default:
                 l_lastPosition = mHeadPosition;
         }
 
+        mThumbsViews[mHeadPosition].setRotation(l_rotation);
         return l_toReturn;
     }
 
     private void setWormHeadPosition(final OnSwipeListener.Direction p_direction) {
+        float l_rotation = 0f;
         mThumbsViews[mHeadPosition].setImageResource(R.drawable.empty);
         mThumbIds[mHeadPosition] = R.drawable.empty;
 
         switch (p_direction) {
             case up:
                 mHeadPosition = mHeadPosition - (ROW_WIDTH * (mHeadPosition / ROW_WIDTH));
+                l_rotation = 270f;
                 break;
             case down:
-                mHeadPosition = mHeadPosition + (ROW_WIDTH * (mThumbIds.length / ROW_WIDTH));
+                mHeadPosition = (mThumbIds.length - ROW_WIDTH) + mHeadPosition % ROW_WIDTH;
+                l_rotation = 90f;
                 break;
             case left:
                 mHeadPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
+                l_rotation = 180f;
                 break;
             case right:
                 mHeadPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
+                l_rotation = 0f;
                 break;
         }
+        if (mHeadPosition == 0)
+            mHeadPosition = 1;
 
         mThumbsViews[mHeadPosition].setImageResource(R.drawable.worm_head);
+        mThumbsViews[mHeadPosition].setRotation(l_rotation);
         mThumbIds[mHeadPosition] = R.drawable.worm_head;
     }
 

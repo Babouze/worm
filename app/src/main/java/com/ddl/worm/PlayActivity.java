@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.ddl.worm.utils.ImageAdapter;
 import com.ddl.worm.utils.OnSwipeListener;
@@ -29,22 +30,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             @Override
             public boolean onSwipe(Direction direction) {
                 ((ImageAdapter) m_gridView.getAdapter()).makeWormMove(direction);
-
-//                switch (direction) {
-//                    case up:
-//                        onUpSwipe();
-//                        return true;
-//                    case left:
-//                        onLeftSwipe();
-//                        return true;
-//                    case down:
-//                        onDownSwipe();
-//                        return true;
-//                    case right:
-//                        onRightSwipe();
-//                        return true;
-//                }
-
                 return super.onSwipe(direction);
             }
         });
@@ -57,5 +42,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         m_swipeDetector.onTouchEvent(motionEvent);
         view.performClick();
         return true;
+    }
+
+    public void getCoordonates(View v) {
+        Toast.makeText(this, "indice : " + ImageAdapter.mHeadPosition, Toast.LENGTH_LONG);
     }
 }
