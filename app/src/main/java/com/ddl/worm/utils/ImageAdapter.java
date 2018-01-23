@@ -32,7 +32,8 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         imageView = new ImageView(mContext);
         imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setPadding(0, 0, 0, 0);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(mThumbIds[position]);
         return imageView;
     }
@@ -53,11 +54,13 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
-        if (convertView == null) {
+        if (mThumbsViews[position] != null) {
+            imageView = mThumbsViews[position];
+        } else if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView = (ImageView) convertView;
         }
@@ -100,9 +103,6 @@ public class ImageAdapter extends BaseAdapter {
                 l_toReturn = new Pair<>(mThumbsViews[l_lastPosition].getX() - mThumbsViews[mHeadPosition].getX(), (float) Animation.RELATIVE_TO_SELF);
                 l_rotation = 0f;
                 break;
-
-            default:
-                l_lastPosition = mHeadPosition;
         }
 
         mThumbsViews[mHeadPosition].setRotation(l_rotation);
@@ -111,6 +111,7 @@ public class ImageAdapter extends BaseAdapter {
 
     private void setWormHeadPosition(final OnSwipeListener.Direction p_direction) {
         float l_rotation = 0f;
+        int l_basePosition = mHeadPosition;
         mThumbsViews[mHeadPosition].setImageResource(R.drawable.empty);
         mThumbIds[mHeadPosition] = R.drawable.empty;
 
@@ -118,23 +119,40 @@ public class ImageAdapter extends BaseAdapter {
             case up:
                 mHeadPosition = mHeadPosition - (ROW_WIDTH * (mHeadPosition / ROW_WIDTH));
                 l_rotation = 270f;
+                for (int position = l_basePosition; position > mHeadPosition; position -= ROW_WIDTH) {
+                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
+                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setRotation(l_rotation);
+                }
                 break;
             case down:
                 mHeadPosition = (mThumbIds.length - ROW_WIDTH) + mHeadPosition % ROW_WIDTH;
                 l_rotation = 90f;
+                for (int position = l_basePosition; position < mHeadPosition; position += ROW_WIDTH) {
+                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
+                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setRotation(l_rotation);
+                }
                 break;
             case left:
                 mHeadPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
                 l_rotation = 180f;
+                for (int position = l_basePosition; position > mHeadPosition; position--) {
+                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
+                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setRotation(l_rotation);
+                }
                 break;
             case right:
                 mHeadPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
                 l_rotation = 0f;
+                for (int position = l_basePosition; position < mHeadPosition; position++) {
+                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
+                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setRotation(l_rotation);
+                }
                 break;
         }
-        //TODO: remove it
-        if (mHeadPosition == 0)
-            mHeadPosition = 1;
 
         mThumbsViews[mHeadPosition].setImageResource(R.drawable.worm_head);
         mThumbsViews[mHeadPosition].setRotation(l_rotation);
@@ -150,7 +168,7 @@ public class ImageAdapter extends BaseAdapter {
         try {
             Pair<Float, Float> l_coord = getLastPositionInDirection(p_direction);
             TranslateAnimation l_animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, l_coord.first, Animation.RELATIVE_TO_SELF, l_coord.second);
-            l_animation.setDuration(300);
+            l_animation.setDuration(Math.abs((long) (l_coord.first + l_coord.second)) / 10); // TODO: remove /10 before release the app
             l_animation.setInterpolator(new LinearInterpolator());
             l_animation.setFillAfter(false);
             l_animation.setAnimationListener(new Animation.AnimationListener() {
