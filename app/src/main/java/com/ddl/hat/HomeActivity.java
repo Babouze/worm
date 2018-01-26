@@ -1,4 +1,4 @@
-package com.ddl.worm;
+package com.ddl.hat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import com.ddl.worm.R;
 
 public class HomeActivity extends AppCompatActivity {
     @Override
@@ -31,12 +33,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    void startPlayActivity(View v) {
+    public void startPlayActivity(View v) {
         Intent intent = new Intent(this, PlayActivity.class);
         startActivity(intent);
     }
 
-    void startSettingsActivity(View v) {
+    public void startSettingsActivity(View v) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }

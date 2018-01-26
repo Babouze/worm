@@ -1,4 +1,4 @@
-package com.ddl.worm.utils;
+package com.ddl.hat.utils;
 
 import android.content.Context;
 import android.util.Pair;
@@ -17,7 +17,7 @@ public class ImageAdapter extends BaseAdapter {
     private static int ROW_WIDTH = 10;
     private Context mContext;
     private ImageView[] mThumbsViews;
-    public static int mHeadPosition;
+    private static int mHeadPosition;
 
     public ImageAdapter(Context c) {
         mContext = c;

@@ -8,22 +8,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/perso">
-        <activity android:name=".HomeActivity">
+        android:theme="@style/perso"
+        android:fullBackupContent="true">
+        <activity android:name="com.ddl.hat.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlayActivity" />
+        <activity android:name="com.ddl.hat.PlayActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.ddl.hat.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".HomeActivity">
+            android:parentActivityName="com.ddl.hat.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ddl.worm.HomeActivity" />
+                android:value="com.ddl.hat.HomeActivity" />
         </activity>
     </application>
 

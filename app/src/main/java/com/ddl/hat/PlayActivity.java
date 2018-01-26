@@ -1,4 +1,4 @@
-package com.ddl.worm;
+package com.ddl.hat;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridView;
 
-import com.ddl.worm.utils.ImageAdapter;
-import com.ddl.worm.utils.OnSwipeListener;
+import com.ddl.hat.utils.ImageAdapter;
+import com.ddl.hat.utils.OnSwipeListener;
+import com.ddl.worm.R;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 

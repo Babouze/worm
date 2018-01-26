@@ -1,4 +1,4 @@
-package com.ddl.worm.utils;
+package com.ddl.hat.utils;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -58,7 +58,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
      * @param y2 the y position of the second point
      * @return the direction
      */
-    public Direction getDirection(float x1, float y1, float x2, float y2) {
+    private Direction getDirection(float x1, float y1, float x2, float y2) {
         double angle = getAngle(x1, y1, x2, y2);
         return Direction.get(angle);
     }
@@ -74,7 +74,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
      * @param y2 the y position of the second point
      * @return the angle between two points
      */
-    public double getAngle(float x1, float y1, float x2, float y2) {
+    private double getAngle(float x1, float y1, float x2, float y2) {
 
         double rad = Math.atan2(y1 - y2, x2 - x1) + Math.PI;
         return (rad * 180 / Math.PI + 180) % 360;

@@ -1,4 +1,4 @@
-package com.ddl.worm;
+package com.ddl.hat;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+
+import com.ddl.worm.R;
 
 import java.util.List;
 
