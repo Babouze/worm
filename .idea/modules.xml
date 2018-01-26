@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WORM.iml" filepath="$PROJECT_DIR$/WORM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HAT.iml" filepath="$PROJECT_DIR$/HAT.iml" />
+      <module fileurl="file://C:\Users\Adrien\Documents\HAT\WORM.iml" filepath="C:\Users\Adrien\Documents\HAT\WORM.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

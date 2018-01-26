@@ -72,7 +72,7 @@ public class ImageAdapter extends BaseAdapter {
         mThumbsViews[position] = imageView;
 
         // Save the head position
-        if (mThumbIds[position] == R.drawable.worm_head)
+        if (mThumbIds[position] == R.drawable.hat)
             mHeadPosition = position;
 
         return imageView;
@@ -120,8 +120,8 @@ public class ImageAdapter extends BaseAdapter {
                 mHeadPosition = mHeadPosition - (ROW_WIDTH * (mHeadPosition / ROW_WIDTH));
                 l_rotation = 270f;
                 for (int position = l_basePosition; position > mHeadPosition; position -= ROW_WIDTH) {
-                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
-                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setImageResource(R.drawable.stone);
+                    mThumbIds[position] = R.drawable.stone;
                     mThumbsViews[position].setRotation(l_rotation);
                 }
                 break;
@@ -129,8 +129,8 @@ public class ImageAdapter extends BaseAdapter {
                 mHeadPosition = (mThumbIds.length - ROW_WIDTH) + mHeadPosition % ROW_WIDTH;
                 l_rotation = 90f;
                 for (int position = l_basePosition; position < mHeadPosition; position += ROW_WIDTH) {
-                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
-                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setImageResource(R.drawable.stone);
+                    mThumbIds[position] = R.drawable.stone;
                     mThumbsViews[position].setRotation(l_rotation);
                 }
                 break;
@@ -138,8 +138,8 @@ public class ImageAdapter extends BaseAdapter {
                 mHeadPosition = mHeadPosition - (mHeadPosition % ROW_WIDTH);
                 l_rotation = 180f;
                 for (int position = l_basePosition; position > mHeadPosition; position--) {
-                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
-                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setImageResource(R.drawable.stone);
+                    mThumbIds[position] = R.drawable.stone;
                     mThumbsViews[position].setRotation(l_rotation);
                 }
                 break;
@@ -147,16 +147,16 @@ public class ImageAdapter extends BaseAdapter {
                 mHeadPosition = mHeadPosition + ((ROW_WIDTH - 1) - (mHeadPosition % ROW_WIDTH));
                 l_rotation = 0f;
                 for (int position = l_basePosition; position < mHeadPosition; position++) {
-                    mThumbsViews[position].setImageResource(R.drawable.worm_body);
-                    mThumbIds[position] = R.drawable.worm_body;
+                    mThumbsViews[position].setImageResource(R.drawable.stone);
+                    mThumbIds[position] = R.drawable.stone;
                     mThumbsViews[position].setRotation(l_rotation);
                 }
                 break;
         }
 
-        mThumbsViews[mHeadPosition].setImageResource(R.drawable.worm_head);
+        mThumbsViews[mHeadPosition].setImageResource(R.drawable.hat);
         mThumbsViews[mHeadPosition].setRotation(l_rotation);
-        mThumbIds[mHeadPosition] = R.drawable.worm_head;
+        mThumbIds[mHeadPosition] = R.drawable.hat;
     }
 
     public void makeWormMove(final OnSwipeListener.Direction p_direction) {
@@ -199,11 +199,11 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.worm_head, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.hat, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
+            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.gem_squared, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
             R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
