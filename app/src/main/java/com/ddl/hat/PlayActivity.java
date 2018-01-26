@@ -7,15 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.ddl.hat.utils.ImageAdapter;
 import com.ddl.hat.utils.OnSwipeListener;
 import com.ddl.worm.R;
 
+import java.util.Locale;
+
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 
     GridView m_gridView;
     private GestureDetectorCompat m_swipeDetector;
+    private int m_moves;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -35,12 +39,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         });
 
         m_gridView.setOnTouchListener(this);
+
+        m_moves = 0;
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         m_swipeDetector.onTouchEvent(motionEvent);
+        addMove();
         view.performClick();
         return true;
+    }
+
+    private void addMove() {
+        m_moves++;
+        ((TextView) findViewById(R.id.moves)).setText(String.format(Locale.FRANCE, "Moves : %d", m_moves));
     }
 }
