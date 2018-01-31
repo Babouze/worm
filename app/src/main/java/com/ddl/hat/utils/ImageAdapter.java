@@ -1,6 +1,7 @@
 package com.ddl.hat.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,36 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.ddl.worm.R;
+import com.ddl.hat.HomeActivity;
+import com.ddl.hat.PlayActivity;
+import com.ddl.hat.R;
+import com.ddl.hat.levels.Level;
+import com.ddl.hat.levels.Level1;
+
+import java.util.Arrays;
 
 public class ImageAdapter extends BaseAdapter {
     private static int ROW_WIDTH = 10;
+    private static int mHeadPosition;
     private Context mContext;
     private ImageView[] mThumbsViews;
-    private static int mHeadPosition;
+    private boolean m_isWin = false;
+    private Integer[] mThumbIds = null;
+    private int m_levelNumber;
+    private Integer[] m_gems = {R.drawable.gem_squared, R.drawable.gem_diamond, R.drawable.gem_drop, R.drawable.gem_octo};
 
-    public ImageAdapter(Context c) {
+    public ImageAdapter(Context c, Intent p_intent) {
         mContext = c;
+        Level l_level = Level.getLevel(p_intent.getIntExtra("level", 1));
+
+        if (l_level == null) { // Go to the home screen
+            Intent intent = new Intent(mContext, HomeActivity.class);
+            mContext.startActivity(intent);
+            l_level = new Level1();
+        }
+
+        m_levelNumber = l_level.getLevelNumber();
+        mThumbIds = l_level.getmThumbIds();
         mThumbsViews = new ImageView[mThumbIds.length];
     }
 
@@ -42,7 +63,7 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
-    private ImageView getWormHeadView() {
+    private ImageView getHatHeadView() {
         try {
             return mThumbsViews[mHeadPosition];
         } catch (Exception e) {
@@ -129,10 +150,15 @@ public class ImageAdapter extends BaseAdapter {
                     break;
             }
 
-            for (int position = mHeadPosition + l_coef; position != p_lastPosition && position >= 0; position += l_coef) {
-                l_lastPosition = position;
+            for (int position = mHeadPosition + l_coef; position != p_lastPosition + l_coef && position >= 0; position += l_coef) {
+                if (Arrays.asList(m_gems).contains(mThumbIds[position])) {
+                    m_isWin = true;
+                    l_lastPosition = position;
+                }
+
                 if (mThumbIds[position] != R.drawable.empty)
                     break;
+                l_lastPosition = position;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +167,7 @@ public class ImageAdapter extends BaseAdapter {
         return l_lastPosition;
     }
 
-    private void setWormHeadPosition(final OnSwipeListener.Direction p_direction) {
+    private void setHatHeadPosition(final OnSwipeListener.Direction p_direction) {
         float l_rotation = 0f;
         int l_basePosition = mHeadPosition;
         mThumbsViews[mHeadPosition].setImageResource(R.drawable.empty);
@@ -191,10 +217,10 @@ public class ImageAdapter extends BaseAdapter {
         mThumbIds[mHeadPosition] = R.drawable.hat;
     }
 
-    public void makeWormMove(final OnSwipeListener.Direction p_direction) {
-        ImageView l_wormHead = getWormHeadView();
+    public void makeHatMove(final OnSwipeListener.Direction p_direction) {
+        ImageView l_hatHead = getHatHeadView();
 
-        if (l_wormHead == null)
+        if (l_hatHead == null)
             return;
 
         try {
@@ -210,7 +236,9 @@ public class ImageAdapter extends BaseAdapter {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    setWormHeadPosition(p_direction);
+                    setHatHeadPosition(p_direction);
+                    if (m_isWin)
+                        makeLevelEnd();
                 }
 
                 @Override
@@ -218,27 +246,15 @@ public class ImageAdapter extends BaseAdapter {
                 }
             });
 
-            l_wormHead.startAnimation(l_animation);
+            l_hatHead.startAnimation(l_animation);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.hat, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.gem_squared, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty,
-            R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty, R.drawable.empty
-    };
+    private void makeLevelEnd() {
+        Intent intent = new Intent(mContext, PlayActivity.class);
+        intent.putExtra("level", m_levelNumber + 1);
+        mContext.startActivity(intent);
+    }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.ddl.hat.utils.ImageAdapter;
 import com.ddl.hat.utils.OnSwipeListener;
-import com.ddl.worm.R;
+import com.ddl.hat.R;
 
 import java.util.Locale;
 
@@ -28,12 +28,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_play);
 
         m_gridView = findViewById(R.id.grid);
-        m_gridView.setAdapter(new ImageAdapter(this));
+        m_gridView.setAdapter(new ImageAdapter(this, getIntent()));
 
         m_swipeDetector = new GestureDetectorCompat(this, new OnSwipeListener() {
             @Override
             public boolean onSwipe(Direction direction) {
-                ((ImageAdapter) m_gridView.getAdapter()).makeWormMove(direction);
+                ((ImageAdapter) m_gridView.getAdapter()).makeHatMove(direction);
+                addMove();
                 return super.onSwipe(direction);
             }
         });
@@ -46,7 +47,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         m_swipeDetector.onTouchEvent(motionEvent);
-        addMove();
         view.performClick();
         return true;
     }

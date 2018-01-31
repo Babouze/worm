@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:412453947990:android:e15c146f9603ef2b",
         "android_client_info": {
-          "package_name": "com.ddl.worm"
+          "package_name": "com.ddl.hat"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "412453947990-6pfv96tkog1jej426l38s5ckucl0hpps.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ddl.worm",
+            "package_name": "com.ddl.hat",
             "certificate_hash": "0ee8637197681ec07fbd8ad2941cfb3ceec6a2df"
           }
         },

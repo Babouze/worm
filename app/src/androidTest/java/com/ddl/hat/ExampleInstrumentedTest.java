@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.ddl.worm", appContext.getPackageName());
+        assertEquals("com.ddl.hat", appContext.getPackageName());
     }
 }

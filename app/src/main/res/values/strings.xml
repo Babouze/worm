@@ -80,4 +80,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="level">Level 0</string>
     <string name="moves">Moves : 0</string>
+    <string name="character_drawable">character drawable</string>
 </resources>
