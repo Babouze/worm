@@ -23,20 +23,34 @@
     <Button
         android:id="@+id/playButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="212dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:onClick="startPlayActivity"
         android:text="@string/play"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.586" />
+        app:layout_constraintVertical_bias="0.418" />
+
+    <Button
+        android:id="@+id/levelsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:onClick="startLevelsActivity"
+        android:text="@string/levels"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playButton"
+        app:layout_constraintVertical_bias="0.075" />
 
     <TextView
         android:id="@+id/version"

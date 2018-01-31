@@ -57,4 +57,9 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
+    public void startLevelsActivity(View view) {
+        Intent intent = new Intent(this, LevelsActivity.class);
+        startActivity(intent);
+    }
 }
