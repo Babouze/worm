@@ -15,8 +15,7 @@ import android.widget.ImageView;
 import com.ddl.hat.HomeActivity;
 import com.ddl.hat.PlayActivity;
 import com.ddl.hat.R;
-import com.ddl.hat.levels.Level;
-import com.ddl.hat.levels.Level1;
+import com.ddl.hat.level.Level;
 
 import java.util.Arrays;
 
@@ -32,17 +31,16 @@ public class ImageAdapter extends BaseAdapter {
 
     public ImageAdapter(Context c, Intent p_intent) {
         mContext = c;
-        Level l_level = Level.getLevel(p_intent.getIntExtra("level", 1));
+        Level l_level = Level.getLevel(c, p_intent.getIntExtra("level", 1));
 
         if (l_level == null) { // Go to the home screen
             Intent intent = new Intent(mContext, HomeActivity.class);
             mContext.startActivity(intent);
-            l_level = new Level1();
+        } else {
+            m_levelNumber = l_level.getLevelNumber();
+            mThumbIds = l_level.getmThumbIds();
+            mThumbsViews = new ImageView[mThumbIds.length];
         }
-
-        m_levelNumber = l_level.getLevelNumber();
-        mThumbIds = l_level.getmThumbIds();
-        mThumbsViews = new ImageView[mThumbIds.length];
     }
 
     public int getCount() {

@@ -1,6 +1,7 @@
 package com.ddl.hat;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.ddl.hat.level.Levels;
 import com.ddl.hat.utils.ImageAdapter;
 import com.ddl.hat.utils.OnSwipeListener;
 import com.ddl.hat.R;
@@ -28,7 +30,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_play);
 
         m_gridView = findViewById(R.id.grid);
-        m_gridView.setAdapter(new ImageAdapter(this, getIntent()));
+
+        // If we reach the last level
+        if (getIntent().getIntExtra("level", Levels.m_levels.size() + 1) <= Levels.m_levels.size()) {
+            m_gridView.setAdapter(new ImageAdapter(this, getIntent()));
+        } else {
+            Intent intent = new Intent(this, HomeActivity.class);
+            this.startActivity(intent);
+        }
 
         m_swipeDetector = new GestureDetectorCompat(this, new OnSwipeListener() {
             @Override

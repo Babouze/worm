@@ -1,17 +1,16 @@
 package com.ddl.hat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.AppCompatDrawableManager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ddl.hat.level.Levels;
+import com.google.gson.Gson;
 
 public class HomeActivity extends AppCompatActivity {
     @Override
@@ -36,6 +35,16 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //save levels to JSON
+        //TODO: ne pas effectuer le traitement suivant s'il a déjà été fait
+        SharedPreferences mPrefs = getSharedPreferences(getApplicationInfo().name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = mPrefs.edit();
+        Gson gson = new Gson();
+        for (int i = 1; i < Levels.m_levels.size(); i++) {
+            ed.putString("level" + i, gson.toJson(Levels.m_levels.get(i, null)));
+        }
+        ed.commit();
     }
 
     public void startPlayActivity(View v) {
